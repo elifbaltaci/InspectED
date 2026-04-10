@@ -6,36 +6,63 @@
     <title>@ViewData["Title"] - InspectED</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/InspectED.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">InspectED</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline">InspedtED</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a asp-controller="Home" asp-action="Index" class="nav-link align-middle px-0 text-white">
+                                <i class="bi bi-house"></i><span class="ms-1 d-none d-sm-inline">Home</span>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+                        <li>
+                            <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-white">
+                                <i class="bi bi-laptop"></i><span class="ms-1 d-none d-sm-inline">Devices</span>
+                            </a>
+                            <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a asp-controller="Device" asp-action="Index" class="nav-link px-0 text-white"> List all</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Device" asp-action="Add" class="nav-link px-0 text-white"> Add Device </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle text-white">
+                                <i class="bi bi-list-ol"></i><span class="ms-1 d-none d-sm-inline">Inspection</span>
+                            </a>
+                            <ul class="collapse show nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                                <li class="w-100">
+                                    <a asp-controller="Grade" asp-action="Index" class="nav-link px-0 text-white"> List all</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Grade" asp-action="Add" class="nav-link px-0 text-white"> New Inspection Form </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
+                    <hr>
+
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <div class="col py-3">
+                @RenderBody()
+            </div>
+        </div>
     </div>
+    
 
     <footer class="border-top footer text-muted">
         <div class="container">

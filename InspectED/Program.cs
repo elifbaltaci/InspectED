@@ -1,6 +1,7 @@
 using InspectED.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
+using InspectED.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,10 @@ builder.Services.AddControllersWithViews();
 //Register DbContext
 var connectionString = builder.Configuration.GetConnectionString("DevMngtConnection"); builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+//Register IGradeRepository and IDeviceRepository
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 
 var app = builder.Build();
 

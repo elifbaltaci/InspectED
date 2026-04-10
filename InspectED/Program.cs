@@ -12,8 +12,7 @@ builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("DevMngtConnection"); builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-//Register IGradeRepository and IDeviceRepository
-builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+//Register IDeviceRepository
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 
 var app = builder.Build();

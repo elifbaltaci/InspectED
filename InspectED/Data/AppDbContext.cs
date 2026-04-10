@@ -16,7 +16,7 @@ namespace InspectED.Data
 
         public DbSet<Models.Device> Devices { get; set; }
 
-        public DbSet<Models.Grade> Grades { get; set; }
+        public DbSet<Models.Location> Locations { get; set; }
 
         }
 }

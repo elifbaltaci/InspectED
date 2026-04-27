@@ -10,8 +10,8 @@ namespace InspectED.Repositories
 {
     public class DeviceRepository : IDeviceRepository
     {
-        private readonly AppDbContext _dbContext;
-        public DeviceRepository(AppDbContext dbContext)
+        private readonly ApplicationDbContext _dbContext;
+        public DeviceRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }

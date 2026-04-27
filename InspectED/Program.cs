@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //Register DbContext
-var connectionString = builder.Configuration.GetConnectionString("DevMngtConnection"); builder.Services.AddDbContext<AppDbContext>(options =>
+var connectionString = builder.Configuration.GetConnectionString("DevMngtConnection"); builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 //Register IDeviceRepository

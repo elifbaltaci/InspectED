@@ -1,26 +1,54 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using InspectED.Models;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace InspectED.Models
 {
     public class Device
     {
-        public int DeviceId { get; set; }
-        public string AssetTag { get; set; } = string.Empty;
-        public string SerialNumber { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public string AssignedUserEmail { get; set; } = string.Empty;
+        public int Id { get; set; }
 
+        [Required]
+        [Display(Name = "Asset Tag")]
+        public string AssetTag { get; set; }
+
+        [Required]
+        [Display(Name = "Serial Number")]
+        public string SerialNumber { get; set; }
+
+        [Required]
+        public string Model { get; set; }
+
+        [Display(Name = "Assigned User Email")]
+        [EmailAddress]
+        public string AssignedUserEmail { get; set; }
+
+        [Display(Name = "Location")]
         public int LocationId { get; set; }
         public Location? Location { get; set; }
 
-        public string ScreenCondition { get; set; } = string.Empty;
-        public string KeyboardCondition { get; set; } = string.Empty;
-        public string BatteryCondition { get; set; } = string.Empty;
+        [Display(Name = "Screen Condition")]
+        public string ScreenCondition { get; set; }
+
+        [Display(Name = "Keyboard Condition")]
+        public string KeyboardCondition { get; set; }
+
+        [Display(Name = "Battery Condition")]
+        public string BatteryCondition { get; set; }
+
+        [Display(Name = "Charger Available")]
         public bool ChargerAvailable { get; set; }
+
+        [Display(Name = "WiFi Working")]
         public bool WifiWorking { get; set; }
+
+        [Display(Name = "Testing Ready")]
         public bool TestingReady { get; set; }
-        public DateTime? InspectionDate { get; set; }
-        public string Notes { get; set; } = string.Empty;
+
+        [Display(Name = "Inspection Date")]
+        [DataType(DataType.Date)]
+        public DateTime InspectionDate { get; set; }
+
+        public string Notes { get; set; }
     }
 }

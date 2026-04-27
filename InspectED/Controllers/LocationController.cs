@@ -1,25 +1,44 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using InspectED.Data;
+using InspectED.Models;
+using InspectED.ViewModels;
 
 namespace InspectED.Controllers
 {
     public class LocationController : Controller
     {
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
+
+        public LocationController(ApplicationDbContext context)
         {
-            return View();
+            _context = context;
         }
 
-
+        [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
-        
         [HttpPost]
-        public IActionResult Add(string name)
+        [ValidateAntiForgeryToken]
+        public IActionResult Add(LocationViewModel model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var location = new Location
+                {
+                    Name = model.Name,
+                    Description = model.Description
+                };
+
+                _context.Locations.Add(location);
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
         }
     }
 }

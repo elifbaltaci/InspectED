@@ -1,6 +1,5 @@
 using InspectED.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
 using InspectED.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +11,10 @@ builder.Services.AddControllersWithViews();
 var connectionString = builder.Configuration.GetConnectionString("DevMngtConnection"); builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-//Register IDeviceRepository
+//Register Device service
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+//Register Location service
+builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 
 var app = builder.Build();
 

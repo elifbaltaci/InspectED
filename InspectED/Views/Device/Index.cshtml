@@ -1,5 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<InspectED.ViewModels.DeviceViewModel>
+
 @{
+    ViewData["Title"] = "All Devices";
 }
+
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-12 d-flex justify-content-between align-items-center">
+            <h3 class="p-4">All Devices</h3>
+            <a asp-controller="Device" asp-action="Add" class="btn btn-dark">
+                Add New Device
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 p-4">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Asset Tag</th>
+                        <th>User Email</th>
+                        <th>Location</th>
+                        <th>Serial Number</th>
+                        <th>Model</th>
+                        <th>Screen Condition</th>
+                        <th>Keyboard Condition</th>
+                        <th>Battery Condition</th>
+                        <th>Charger Available</th>
+                        <th>WiFi Working</th>
+                        <th>Testing Ready</th>
+                        <th>Inspection Date</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var device in Model)
+                    {
+                        <tr>
+                            <td>@device.AssetTag</td>
+                            <td>@device.AssignedUserEmail</td>
+                            <td>@device.Location</td>
+                            <td>@device.SerialNumber</td>
+                            <td>@device.DeviceModel</td>
+                            <td>@device.ScreenCondition</td>
+                            <td>@device.KeyboardCondition</td>
+                            <td>@device.BatteryCondition</td>
+                            <td>@(device.ChargerAvailable ? "Yes" : "No")</td>
+                            <td>@(device.WifiWorking ? "Yes" : "No")</td>
+                            <td>@(device.TestingReady ? "Ready" : "Not Ready")</td>
+                            <td>@device.InspectionDate.ToShortDateString()</td>
+                            <td>@device.Notes</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

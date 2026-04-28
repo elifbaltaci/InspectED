@@ -35,36 +35,31 @@ namespace InspectED.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AssignedUserEmail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BatteryCondition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("ChargerAvailable")
                         .HasColumnType("bit");
 
+                    b.Property<string>("DeviceModel")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("InspectionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("KeyboardCondition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Notes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ScreenCondition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SerialNumber")
@@ -86,11 +81,11 @@ namespace InspectED.Migrations
 
             modelBuilder.Entity("InspectED.Models.Location", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("LocationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationId"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -99,7 +94,7 @@ namespace InspectED.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("LocationId");
 
                     b.ToTable("Locations");
                 });
@@ -107,12 +102,17 @@ namespace InspectED.Migrations
             modelBuilder.Entity("InspectED.Models.Device", b =>
                 {
                     b.HasOne("InspectED.Models.Location", "Location")
-                        .WithMany()
+                        .WithMany("Devices")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Location");
+                });
+
+            modelBuilder.Entity("InspectED.Models.Location", b =>
+                {
+                    b.Navigation("Devices");
                 });
 #pragma warning restore 612, 618
         }

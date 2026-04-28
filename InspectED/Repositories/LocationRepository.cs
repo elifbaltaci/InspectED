@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using InspectED.Data;
+﻿using InspectED.Data;
 using InspectED.Models;
+using InspectED.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace InspectED.Repositories
@@ -21,31 +19,54 @@ namespace InspectED.Repositories
             return await _dbContext.Locations.FindAsync(id);
         }
 
-        public async Task<List<Location>> GetAllAsync()
+        public async Task<List<LocationViewModel>> GetAllAsync()
         {
-            return await _dbContext.Locations.ToListAsync();
+            var locations = await _dbContext.Locations.ToListAsync();
+            List<LocationViewModel> locationViewModels = new List<LocationViewModel>();
+            foreach (var location in locations)
+            {
+                var locationViewModel = new LocationViewModel
+                {
+                    LocationId = location.LocationId,
+                    Name = location.Name
+                };
+
+                locationViewModels.Add(locationViewModel);
+            }
+
+            return locationViewModels;
         }
 
         public async Task AddAsync(Location location)
         {
             await _dbContext.Locations.AddAsync(location);
-            await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Location location)
         {
             _dbContext.Locations.Update(location);
-            await _dbContext.SaveChangesAsync();
+            await Task.CompletedTask;
         }
 
         public async Task DeleteAsync(int id)
         {
             var location = await _dbContext.Locations.FindAsync(id);
+
             if (location != null)
             {
                 _dbContext.Locations.Remove(location);
-                await _dbContext.SaveChangesAsync();
             }
+        }
+
+        public async Task SaveAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> LocationExistsAsync(string name)
+        {
+            return await _dbContext.Locations
+                .AnyAsync(l => l.Name.ToLower().Trim() == name.ToLower().Trim());
         }
     }
 }

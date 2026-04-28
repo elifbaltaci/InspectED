@@ -1,5 +1,4 @@
-﻿using InspectED.Models;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace InspectED.Models
@@ -10,31 +9,32 @@ namespace InspectED.Models
 
         [Required]
         [Display(Name = "Asset Tag")]
-        public string AssetTag { get; set; }
+        public string AssetTag { get; set; } = string.Empty;
 
         [Required]
         [Display(Name = "Serial Number")]
-        public string SerialNumber { get; set; }
+        public string SerialNumber { get; set; } = string.Empty;
 
         [Required]
-        public string Model { get; set; }
+        [Display(Name = "Device Model")]
+        public string DeviceModel { get; set; } = string.Empty;
 
         [Display(Name = "Assigned User Email")]
         [EmailAddress]
-        public string AssignedUserEmail { get; set; }
+        public string? AssignedUserEmail { get; set; }
 
         [Display(Name = "Location")]
         public int LocationId { get; set; }
         public Location? Location { get; set; }
 
         [Display(Name = "Screen Condition")]
-        public string ScreenCondition { get; set; }
+        public string? ScreenCondition { get; set; }
 
         [Display(Name = "Keyboard Condition")]
-        public string KeyboardCondition { get; set; }
+        public string? KeyboardCondition { get; set; }
 
         [Display(Name = "Battery Condition")]
-        public string BatteryCondition { get; set; }
+        public string? BatteryCondition { get; set; }
 
         [Display(Name = "Charger Available")]
         public bool ChargerAvailable { get; set; }
@@ -47,8 +47,8 @@ namespace InspectED.Models
 
         [Display(Name = "Inspection Date")]
         [DataType(DataType.Date)]
-        public DateTime InspectionDate { get; set; }
+        public DateTime InspectionDate { get; set; } = DateTime.Today;
 
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
     }
 }

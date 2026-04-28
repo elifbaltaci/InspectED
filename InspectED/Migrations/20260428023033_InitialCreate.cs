@@ -15,14 +15,14 @@ namespace InspectED.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    LocationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locations", x => x.Id);
+                    table.PrimaryKey("PK_Locations", x => x.LocationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,17 +33,17 @@ namespace InspectED.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AssetTag = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AssignedUserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DeviceModel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssignedUserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LocationId = table.Column<int>(type: "int", nullable: false),
-                    ScreenCondition = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    KeyboardCondition = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BatteryCondition = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ScreenCondition = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    KeyboardCondition = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BatteryCondition = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChargerAvailable = table.Column<bool>(type: "bit", nullable: false),
                     WifiWorking = table.Column<bool>(type: "bit", nullable: false),
                     TestingReady = table.Column<bool>(type: "bit", nullable: false),
                     InspectionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,7 +52,7 @@ namespace InspectED.Migrations
                         name: "FK_Devices_Locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "Locations",
-                        principalColumn: "Id",
+                        principalColumn: "LocationId",
                         onDelete: ReferentialAction.Cascade);
                 });
 

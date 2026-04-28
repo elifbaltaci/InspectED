@@ -1,109 +1,69 @@
-﻿using InspectED.ViewModels;
+﻿using InspectED.Models;
+using InspectED.Repositories;
+using InspectED.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using InspectED.Models;
-using InspectED.Data;
 
 namespace InspectED.Controllers
 {
     public class DeviceController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IDeviceRepository _deviceRepository;
 
-        public DeviceController(ApplicationDbContext context)
+        public DeviceController(IDeviceRepository deviceRepository)
         {
-            _context = context;
+            _deviceRepository = deviceRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var devices = await _deviceRepository.GetAllAsync();
+            return View(devices);
         }
 
-        // Seed Locations
-        private void SeedLocations()
-        {
-            var defaultLocations = new List<string>
-    {
-        "1/A", "1/B",
-        "2/A", "2/B",
-        "3/A", "3/B",
-        "4/A", "4/B",
-        "5/A", "5/B"
-    };
-
-            foreach (var name in defaultLocations)
-            {
-                bool exists = _context.Locations
-                    .Any(l => l.Name.ToLower().Trim() == name.ToLower().Trim());
-
-                if (!exists)
-                {
-                    _context.Locations.Add(new Location { Name = name });
-                }
-            }
-
-            _context.SaveChanges();
-        }
-
-        // GET: Add Device
         [HttpGet]
-        public IActionResult Add()
+        public async Task<IActionResult> Add()
         {
-            SeedLocations(); 
+            await _deviceRepository.SeedLocationsAsync();
 
-            ViewBag.Locations = _context.Locations
-                .OrderBy(l => l.Name)
-                .Select(l => new SelectListItem
-                {
-                    Value = l.LocationId.ToString(),
-                    Text = l.Name
-                })
-                .ToList();
+            var deviceViewModel = new DeviceViewModel
+            {
+                Locations = await _deviceRepository.GetLocationsAsync()
+            };
 
-            return View(new DeviceViewModel());
+            return View(deviceViewModel);
         }
 
-        // POST: Add Device
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Add(DeviceViewModel model)
+        public async Task<IActionResult> Add(DeviceViewModel deviceViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var device = new Device
-                {
-                    AssetTag = model.AssetTag,
-                    SerialNumber = model.SerialNumber,
-                    Model = model.Model,
-                    AssignedUserEmail = model.AssignedUserEmail,
-                    LocationId = model.LocationId,
-                    ScreenCondition = model.ScreenCondition,
-                    KeyboardCondition = model.KeyboardCondition,
-                    BatteryCondition = model.BatteryCondition,
-                    ChargerAvailable = model.ChargerAvailable,
-                    WifiWorking = model.WifiWorking,
-                    TestingReady = model.TestingReady,
-                    InspectionDate = model.InspectionDate,
-                    Notes = model.Notes
-                };
-
-                _context.Devices.Add(device);
-                _context.SaveChanges();
-
-                return RedirectToAction("Index");
+                deviceViewModel.Locations = await _deviceRepository.GetLocationsAsync();
+                return View(deviceViewModel);
             }
 
-            // reload dropdown if validation fails
-            ViewBag.Locations = _context.Locations
-                .Select(l => new SelectListItem
-                {
-                    Value = l.LocationId.ToString(),
-                    Text = l.Name
-                })
-                .ToList();
+            var device = new Device
+            {
+                AssetTag = deviceViewModel.AssetTag,
+                SerialNumber = deviceViewModel.SerialNumber,
+                DeviceModel = deviceViewModel.DeviceModel,
+                AssignedUserEmail = deviceViewModel.AssignedUserEmail,
+                LocationId = deviceViewModel.LocationId,
+                ScreenCondition = deviceViewModel.ScreenCondition,
+                KeyboardCondition = deviceViewModel.KeyboardCondition,
+                BatteryCondition = deviceViewModel.BatteryCondition,
+                ChargerAvailable = deviceViewModel.ChargerAvailable,
+                WifiWorking = deviceViewModel.WifiWorking,
+                TestingReady = deviceViewModel.TestingReady,
+                InspectionDate = deviceViewModel.InspectionDate,
+                Notes = deviceViewModel.Notes
+            };
 
-            return View(model);
+            await _deviceRepository.AddAsync(device);
+            await _deviceRepository.SaveAsync();
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

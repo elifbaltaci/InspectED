@@ -1,0 +1,39 @@
+﻿@model InspectED.ViewModels.LocationViewModel
+
+@{
+    ViewData["Title"] = "Edit Location";
+}
+
+<div class="container p-4">
+    <div class="row p-4">
+        <div class="col-md-12">
+            <h3>Edit Location</h3>
+        </div>
+    </div>
+
+    <div class="row p-4">
+        <div class="col-md-6">
+            <form asp-action="Edit" asp-controller="Location" method="post">
+                <input type="hidden" asp-for="LocationId" />
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label fw-bold">Location</label>
+                    <input asp-for="Name" type="text" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-dark">Update Location</button>
+
+                <a asp-action="Index" asp-controller="Location" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -52,6 +52,24 @@
                             <td>@(device.TestingReady ? "Ready" : "Not Ready")</td>
                             <td>@device.InspectionDate.ToShortDateString()</td>
                             <td>@device.Notes</td>
+                            <td>
+                                <a class="btn btn-dark"
+                                       asp-action="Edit"
+                                       asp-controller="Device"
+                                       asp-route-id="@device.Id">
+                                    Edit
+                                </a>
+                            </td>
+
+                            <td>
+                                <a class="btn btn-danger"
+                                       asp-action="Delete"
+                                       asp-controller="Device"
+                                       asp-route-id="@device.Id"
+                                       onclick="return confirm('Delete this device?')">
+                                    Delete
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>

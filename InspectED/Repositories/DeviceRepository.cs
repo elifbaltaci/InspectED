@@ -15,11 +15,32 @@ namespace InspectED.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Device?> GetByIdAsync(int id)
+        public async Task<DeviceViewModel?> GetByIdAsync(int id)
         {
-            return await _dbContext.Devices
-                .Include(d => d.Location)
-                .FirstOrDefaultAsync(d => d.Id == id);
+            var device = await _dbContext.Devices.FindAsync(id);
+
+            if (device == null)
+            {
+                return null;
+            }
+
+            return new DeviceViewModel
+            {
+                Id = device.Id,
+                AssetTag = device.AssetTag,
+                SerialNumber = device.SerialNumber,
+                DeviceModel = device.DeviceModel,
+                AssignedUserEmail = device.AssignedUserEmail,
+                LocationId = device.LocationId,
+                ScreenCondition = device.ScreenCondition,
+                KeyboardCondition = device.KeyboardCondition,
+                BatteryCondition = device.BatteryCondition,
+                ChargerAvailable = device.ChargerAvailable,
+                WifiWorking = device.WifiWorking,
+                TestingReady = device.TestingReady,
+                InspectionDate = device.InspectionDate,
+                Notes = device.Notes
+            };
         }
 
         public async Task<List<DeviceViewModel>> GetAllAsync()

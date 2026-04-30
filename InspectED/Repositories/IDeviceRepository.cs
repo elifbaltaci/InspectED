@@ -6,7 +6,7 @@ namespace InspectED.Repositories
 {
     public interface IDeviceRepository
     {
-        Task<Device?> GetByIdAsync(int id);
+        Task<DeviceViewModel?> GetByIdAsync(int id);
 
         Task<List<DeviceViewModel>> GetAllAsync();
 

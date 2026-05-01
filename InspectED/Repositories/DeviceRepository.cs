@@ -43,9 +43,9 @@ namespace InspectED.Repositories
             };
         }
 
-        public async Task<List<DeviceViewModel>> GetAllAsync()
+        public IQueryable<DeviceViewModel> GetAll()
         {
-            return await _dbContext.Devices
+            return _dbContext.Devices
                 .Include(d => d.Location)
                 .Select(device => new DeviceViewModel
                 {
@@ -64,8 +64,7 @@ namespace InspectED.Repositories
                     TestingReady = device.TestingReady,
                     InspectionDate = device.InspectionDate,
                     Notes = device.Notes
-                })
-                .ToListAsync();
+                });
         }
 
         public async Task AddAsync(Device device)

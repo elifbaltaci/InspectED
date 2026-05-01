@@ -8,7 +8,7 @@ namespace InspectED.Repositories
     {
         Task<DeviceViewModel?> GetByIdAsync(int id);
 
-        Task<List<DeviceViewModel>> GetAllAsync();
+        IQueryable<DeviceViewModel> GetAll();
 
         Task AddAsync(Device device);
 

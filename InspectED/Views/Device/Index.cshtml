@@ -1,4 +1,4 @@
-﻿@model IEnumerable<InspectED.ViewModels.DeviceViewModel>
+﻿@model InspectED.Models.PaginatedList<InspectED.ViewModels.DeviceViewModel>
 
 @{
     ViewData["Title"] = "All Devices";
@@ -15,28 +15,40 @@
     </div>
 
     <div class="row">
+        <div class="col-md-6">
+            <form class="d-flex" asp-action="Index" asp-controller="Device">
+                <input name="searchString" class="form-control me-1" type="search" placeholder="Search" aria-label="Search" value="@ViewData["CurrentFilter"]">
+                <button class="btn btn-dark" type="submit">Search by name</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <a asp-action="Index" class="text-dark">Back to Full List</a>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-md-12 p-4">
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Asset Tag</th>
-                        <th>User Email</th>
-                        <th>Location</th>
-                        <th>Serial Number</th>
-                        <th>Model</th>
-                        <th>Screen Condition</th>
-                        <th>Keyboard Condition</th>
-                        <th>Battery Condition</th>
-                        <th>Charger Available</th>
-                        <th>WiFi Working</th>
-                        <th>Testing Ready</th>
-                        <th>Inspection Date</th>
-                        <th>Notes</th>
+                        <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["AssetTagSortParam"]" class="text-dark">Asset Tag</a></th>
+                        <th scope="col"><a class="text-dark" asp-controller="Device" asp-action="Index" asp-route-sortOrder=@ViewData["AssignedUserEmailSortParam"]>User Email</a></th>
+                        <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["LocationSortParam"]" class="text-dark"></a>Location</th>
+                        <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["SerialNumberSortParam"]" class="text-dark">Serial Number</a></th>
+                        <th scope="col"><a asp-action="Index" asp-route-sortOrder="@ViewData["DeviceModelSortParam"]" class="text-dark">Model</a></th>
+                        <th scope="col">Screen Condition</th>
+                        <th scope="col">Keyboard Condition</th>
+                        <th scope="col">Battery Condition</th>
+                        <th scope="col">Charger Available</th>
+                        <th scope="col">WiFi Working</th>
+                        <th scope="col">Testing Ready</th>
+                        <th scope="col">Inspection Date</th>
+                        <th scope ="col">Notes</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var device in Model)
+                    @foreach (var device in Model.Items)
                     {
                         <tr>
                             <td>@device.AssetTag</td>
@@ -76,4 +88,57 @@
             </table>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <nav>
+                <ul class="pagination justify-content-end">
+                    <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                        <a class="page-link text-black" asp-route-pageNumber="1"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            <span>First</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                        <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex - 1)"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            <span>Previous</span>
+                        </a>
+                    </li>
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.PageIndex == i ? "active" : "")">
+                            <a class="page-link text-black" asp-route-pageNumber="@i"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                        <a class="page-link text-black" asp-route-pageNumber="@(Model.PageIndex + 1)"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            <span>Next</span>
+                        </a>
+                    </li>
+                    <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link text-black" asp-route-pageNumber="@Model.TotalPages"
+                               asp-route-sortOrder="@ViewData["CurrentSort"]"
+                               asp-route-currentFilter="@ViewData["CurrentFilter"]">
+                            <span>Last</span>
+                        </a>
+                    </li>
+
+                   
+                </ul>
+            </nav>
+        </div>
+    </div>
+
 </div>
